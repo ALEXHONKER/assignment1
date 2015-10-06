@@ -2,6 +2,7 @@ import string
 import sys
 import math
 global count
+count=0
 dic={}
 
 nodes={}
@@ -95,6 +96,7 @@ def remove(strs):
 		del dic[street_name]
 
 def graph():
+	global count   # Needed to modify global copy 
 	str_name=dic.keys()
 	for strs in str_name:
 		coor=dic[strs].setxy
@@ -332,6 +334,14 @@ def graph():
 
 
 											dic[strs]=new_street    # add the intersection node
+					#test start:
+					#
+					#
+					print "xy"
+					print x1,y1
+					print x2,y2
+					print dic[strs].no
+					#test end
 					mx1=x1
 					my1=y1
 					nidx1y1=str(x1)+'_'+str(y1)
@@ -346,19 +356,24 @@ def graph():
 							list_node.append(idmax)	
 							mindis=9999999.0
 							minpair=[]
-							minid2=idmin
+							minid2=""
 							while list_node!=[]:
 								for ns in list_node:
+									print "ns: "+ns
 									pair3=dic[strs].no[ns]
 									dis=math.sqrt((pair3[0][1]-my1)**2+(pair3[0][0]-mx1)**2)
 									if dis<mindis:
 										mindis=dis
 										minpair=pair3
 										minid2=ns
+									print "minid2"+minid2
 								edges.append([dic[strs].no[idmin][1],minpair[1]])
 								idmin=minid2
 								ny=minpair[0][1]
-								list_node.remove(minid2)
+								print minid2
+								if minid2!="":
+									list_node.remove(minid2)
+									print list_node
 
 			
 
