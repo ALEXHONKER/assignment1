@@ -27,7 +27,7 @@ def add(strs):
 	c1=strs.find("\"",0)
 	c2=strs.find("\"",c1+1)
 	if c1==-1 or c2==-1:
-		sys.stderr.write("Error: Wrong format of street name")
+		sys.stderr.write("Error: Wrong format of street name.\n")
 		return
 	street_name=strs[c1+1:c2].strip()
 	if dic.has_key(street_name):
@@ -45,14 +45,14 @@ def add(strs):
 			p2=strs.find(")")
 			comma=strs.find(",")
 			if p1==-1 or p2==-1 or comma==-1:
-				sys.stderr.write("Error: Wrong format of GPS coordiante")
+				sys.stderr.write("Error: Wrong format of GPS coordiante.\n")
 				return	
 			co1=strs[p1+1:p2]
 			strs=strs[p2+1:]
 			co1=co1.strip()
 			cor=co1.split(",")
 			if len(cor)!=2 :
-				sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i))
+				sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i)+".\n")
 				return
 			cor[0]=cor[0].strip()
 			cor[1]=cor[1].strip()
@@ -62,10 +62,10 @@ def add(strs):
 				if cor[0][1:].strip().isdigit():
 					x1=-1*string.atoi(cor[0][1:].strip())
 				else :
-					sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i))
+					sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i)+".\n")
 					return			 
 			else :
-				sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i))
+				sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i)+".\n")
 				return 
 			if cor[1].isdigit():
 				y1=string.atoi(cor[1])
@@ -73,10 +73,10 @@ def add(strs):
 				if cor[1][1:].strip().isdigit():
 					y1=-1*string.atoi(cor[1][1:].strip())
 				else :
-					sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i))
+					sys.stderr.write("Error:Wrong format of GPS coordinate: "+str(i)+".\n")
 					return			 
 			else :
-				sys.stderr.write( "Error:Wrong format of GPS coordinate: "+str(i))
+				sys.stderr.write( "Error:Wrong format of GPS coordinate: "+str(i)+".\n")
 				return
 			par=[x1,y1]
 			number_of_cor=number_of_cor+1
@@ -85,7 +85,7 @@ def add(strs):
 			if not (strs.strip() == '' and number_of_cor ==1):
 				str1.setsxy(par)
 			else:
-				sys.stderr.write("Error: Incomplete coordinates in a \""+str(street_name)+"\", no end point")
+				sys.stderr.write("Error: Incomplete coordinates in a \""+str(street_name)+"\", no end point.\n")
 				return
 
 		dic[street_name]=str1
@@ -94,11 +94,11 @@ def delete(strs):
 	c1=strs.find("\"",0)
 	c2=strs.find("\"",c1+1)
 	if c1==-1 or c2==-1:
-		sys.stderr.write( "Error: Wrong format of street name")
+		sys.stderr.write( "Error: Wrong format of street name.\n")
 		return
 	street_name=strs[c1+1:c2].strip()
 	if not dic.has_key(street_name):
-		sys.stderr.write( "Error: 'c' specified for a street that does not exit.")
+		sys.stderr.write( "Error: 'c' specified for a street that does not exit.\n")
 		return
 	else:
 		del dic[street_name]
@@ -108,11 +108,11 @@ def remove(strs):
 	c1=strs.find("\"",0)
 	c2=strs.find("\"",c1+1)
 	if c1==-1 or c2==-1:
-		sys.stderr.write( "Error: Wrong format of street name")
+		sys.stderr.write( "Error: Wrong format of street name\n")
 		return
 	street_name=strs[c1+1:c2].strip()
 	if not dic.has_key(street_name):
-		sys.stderr.write( "Error: 'r' specified for a street that does not exit.")
+		sys.stderr.write( "Error: 'r' specified for a street that does not exit.\n")
 		return
 	else:
 		del dic[street_name]
@@ -498,22 +498,5 @@ while True:
 			pass
 			#print strs+"    23333"
 			#print dic[strs].setxy
-			#print len(dic)
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			#print len(dic)	
 
