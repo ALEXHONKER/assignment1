@@ -30,7 +30,7 @@ int getint(char *s){
 	//printf("hehe %d\n",num);
 	return num;
 }
-void find(int start,int end,int cor[10000][2],int nume,struct node s[]){
+void find(int start,int end,int cor[1000][2],int nume,struct node s[]){
 	int i=0;
 	
 	/*
@@ -60,10 +60,6 @@ void find(int start,int end,int cor[10000][2],int nume,struct node s[]){
 		e2.next=s[cor[i][1]].next;
 		s[cor[i][1]].next=&e2;
 		s[cor[i][1]].index=cor[i][1];
-		if(i==nume-1) {
-			printf("5555");
-			break ;}
-
 		printf("edges1: %d--> %d\n",s[cor[i][0]].index,s[cor[i][0]].next->index);
 		printf("%dedges2: %d--> %d\n",i,s[cor[i][1]].index,s[cor[i][1]].next->index);
 		if(i==nume-1) {
@@ -141,8 +137,8 @@ void heapdchange(int A[],int i,int size,struct node s[]){
 
 
 void main(){
-	char name[10000];
-	int cor[10000][2];
+	char name[1000];
+	int cor[1000][2];
 	int nume=0;
 	int all=0;
 	int start;
@@ -169,34 +165,37 @@ void main(){
 			char x[100];
 			int pointer=0;
 			int xp=0; //for 
+			memset(x,0,100*sizeof(char));
 			for(i=4;i<strlen(name)-1;i++){
 				if(name[i]==',' && name[i-1]!='>'){
 					pointer=1;
-					printf("kkk:  %s",x);
+					//printf("kkk:  %s",x);
 					cor[nume][0]=getint(x);
+					//printf("c0:%d\n",cor[nume][0]);
 					if(cor[nume][0]<0 || cor[nume][0]>=all){
-						printf("Error: wrong point"); 
+						printf("Error: wrong point\n"); 
 						continue;
 					}
-					memset(x,0,strlen(x)*sizeof(char));
-					printf("kkk222:  %s",x);
+					memset(x,0,100*sizeof(char));
+					//printf("kkk222:  %s",x);
 					xp=0;
 
 				}else if(name[i]=='>' && pointer==1){
 					pointer=0;
 					//printf("%c name[i]     getint(x):%d",name[i],getint(x));
-					printf("kkk:  %s",x);
+					//printf("kkk2:  %s",x);
 					cor[nume][1]=getint(x);
+					//printf("c1:%d\n",cor[nume][1]);
 					if(cor[nume][1]<0 || cor[nume][1]>=all){
-						printf("Error: wrong point"); 
+						printf("Error: wrong point\n"); 
 						continue;
 					}
 					nume++;
-					memset(x,0,strlen(x)*sizeof(char));
-					printf("kkk2222:  %s",x);
+					memset(x,0,100*sizeof(char));
+					//printf("kkk2222:  %s",x);
 					xp=0;
 				}else if(name[i]>='0' && name[i]<='9'){
-					printf("=====%d:  %c",xp,name[i]);
+					//printf("=====%d:  %c\n",xp,name[i]);
 					x[xp++]=name[i];
 				}	
 			     else{	
@@ -224,7 +223,61 @@ void main(){
 			//printf("start2: %d, end2: %d\n",start,end);
 			struct node *head=NULL;
 			struct node s[all];
-			find(start,end,cor,nume,s);
+			int iiii=0;
+			for (iiii=0;iiii<all;iiii++){
+				s[iiii].index=iiii;
+				//s[iiii].parent=NULL;
+				s[iiii].next=NULL;
+				s[iiii].add=0;
+				s[iiii].key=99999;
+				s[iiii].inheap=0;
+				//int index;
+				//int parent;
+				//int key; //a big number
+				//int add;
+				//int inheap;
+			}
+			for (iiii=0;iiii<nume;iiii++){
+				printf("%d\n",s[cor[iiii][0]].index);
+			}
+			printf("alll:%d\n",all);
+			//find(start,end,cor,nume,s);
+			printf("nume:%d\n",nume);
+			struct node e1[nume];
+			struct node e2[nume];
+			for(i=0;i<nume;i++){
+				printf("i: %d",i);
+				//printf("ffff %d,%d\n",cor[i][0],cor[i][1]);
+				//struct node e1;
+				//struct node e2;
+				//e1=memset(e1,0,sizeof(node);
+				e1[i].index=cor[i][1];
+				//e2=memset(e2,0,sizeof(node);
+				//printf("ffff %d\n",cor[i][1]);
+				//printf("next%d\n",e1.index);
+				e1[i].next=s[cor[i][0]].next;
+				s[cor[i][0]].next=&e1[i];
+				s[cor[i][0]].index=cor[i][0];
+				//printf("next2%d\n",e1.index);
+				e2[i].index=cor[i][0];
+				e2[i].next=s[cor[i][1]].next;
+				s[cor[i][1]].next=&e2[i];
+				s[cor[i][1]].index=cor[i][1];
+				printf("%dedges1: %d--> %d\n",i,s[cor[i][0]].index,s[cor[i][0]].next->index);
+				printf("%dedges2: %d--> %d\n",i,s[cor[i][1]].index,s[cor[i][1]].next->index);
+				if(i==nume-1){
+					int ik=0;
+					for(ik=0;ik<all;ik++){
+						if(s[ik].next!=NULL){
+							printf("%d",s[ik].next->index);
+						}
+					}
+				}
+			}
+
+
+
+			//
 			printf("222222222222");
 			int heapsize=all-1;
 			int A[heapsize+1];
@@ -274,7 +327,7 @@ void main(){
 			if(flag!=-1){
 				printf("Error: no path from  %d to %d",start,end);
 			}else{
-				int path[10000];
+				int path[1000];
 				int pi=0;
 				path[pi++]=end;
 				struct node *st3=&s[end];
