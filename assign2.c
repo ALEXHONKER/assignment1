@@ -17,7 +17,7 @@ int getint(char *s){
 	int i=0;
 	int p=1;
 	int len2=strlen(s);
-	printf("str: %s, len:%d\n",s,len2);
+	//printf("str: %s, len:%d\n",s,len2);
 	int num=0;
 	for(i=0;i<len2;i++){
 		p=1;
@@ -41,19 +41,105 @@ void find(int start,int end,int cor[10000][2],int nume,struct node s[]){
 	*/
 	//s[all-1].next=NULL;
 	//s[all-1].index=all-1;
+	//printf("find %d,%d,    %d\n",start,end,nume);
+	printf("nume%d",nume);
 	for(i=0;i<nume;i++){
+
+		//printf("ffff %d,%d\n",cor[i][0],cor[i][1]);
 		struct node e1;
 		e1.index=cor[i][1];
+
+		//printf("ffff %d\n",cor[i][1]);
+		//printf("next%d\n",e1.index);
 		e1.next=s[cor[i][0]].next;
 		s[cor[i][0]].next=&e1;
+		s[cor[i][0]].index=cor[i][0];
+		//printf("next2%d\n",e1.index);
 		struct node e2;
 		e2.index=cor[i][0];
 		e2.next=s[cor[i][1]].next;
 		s[cor[i][1]].next=&e2;
-	}
+		s[cor[i][1]].index=cor[i][1];
+		if(i==nume-1) {
+			printf("5555");
+			break ;}
 
+		printf("edges1: %d--> %d\n",s[cor[i][0]].index,s[cor[i][0]].next->index);
+		printf("%dedges2: %d--> %d\n",i,s[cor[i][1]].index,s[cor[i][1]].next->index);
+		if(i==nume-1) {
+			printf("2444444");
+			return ;}
+	
+	}
+   printf("22222223333");
 
 }
+
+
+void maxheapify(int A[],int i,int size,struct node s[]){
+	int l=2*i;
+	int r=2*i+1;
+	int lowest;
+	if(l<=size&& s[A[l]].key<s[A[i]].key){
+		lowest=l;
+	}else{
+		lowest=i;
+	}
+
+	if(r<size && s[A[r]].key<s[A[lowest]].key){
+		lowest=r;
+	}
+	if(lowest!=i){
+		int temp=A[lowest];
+		A[lowest]=A[i];
+		A[i]=temp;
+		maxheapify(A,lowest,size,s);
+	}
+}
+
+void buildheap(int A[],int i,int size,struct node s[]){
+	int ss=size/2;
+	int j=1;
+	for(j=ss;j>=1;j--){
+		maxheapify(A,j,size,s);
+	}
+	//return A;
+}
+
+int getmax(int A[],int i,int size,struct node s[]){
+	int min;
+	if(s<=0){
+		return -1;
+	}else{
+		min=A[1];
+		A[1]=A[size];
+		maxheapify(A,1,size-1,s);
+		return min;
+	}
+}
+
+void heapdecrease(int A[],int size,struct node s[],int new){
+	A[size+1]=s[new].index;
+	int j=size+1;
+	while(j>1 && s[A[j/2]].key>s[A[j]].key){
+		int temp=A[j/2];
+		A[j/2]=A[j];
+		A[j]=temp;
+		j=j/2;
+	}
+}
+
+void heapdchange(int A[],int i,int size,struct node s[]){
+	int j=i;
+	while(j>1 && s[A[j/2]].key>s[A[j]].key){
+		int temp=A[j/2];
+		A[j/2]=A[j];
+		A[j]=temp;
+		j=j/2;
+	}
+}
+
+
 void main(){
 	char name[10000];
 	int cor[10000][2];
@@ -121,25 +207,32 @@ void main(){
 			int i=0;
 			int p1=0;
 			char s1[100];
-			memset(s1,0,strlen(s1)*sizeof(char));
+			memset(s1,0,100*sizeof(char));
 			for(i=2;i<strlen(name);i++){
 				if(name[i]>='0' && name[i]<='9'){
 					s1[p1++]=name[i];
 				}else if(name[i]==' '){
 					start=getint(s1);
 					p1=0;
-					memset(s1,0,strlen(s1)*sizeof(char));
+					memset(s1,0,100*sizeof(char));
 				}
 			}
+			//printf(":%s\n",s1);
+			//printf("%d\n",start);
 			end=getint(s1);
+			printf("start:%d,end: %d\n",start,end);
+			//printf("start2: %d, end2: %d\n",start,end);
 			struct node *head=NULL;
 			struct node s[all];
 			find(start,end,cor,nume,s);
+			printf("222222222222");
 			int heapsize=all-1;
 			int A[heapsize+1];
 			int jj=0;
 			int ii=1;
+			printf("222222222222");
 			struct node *st=&s[start];
+			printf("start: %d",st->index);
 			int par=start;
 			s[start].add=-1;
 			while(st->next!=NULL){
@@ -175,8 +268,8 @@ void main(){
 						s[st2->next->index].parent=par2;
 						buildheap(A,1,ii,s);	
 					}
-				st=st->next;
-			}
+					st=st->next;
+				}
 			}
 			if(flag!=-1){
 				printf("Error: no path from  %d to %d",start,end);
@@ -198,76 +291,16 @@ void main(){
 			}
 
 		}
+		/*
 		int iii=0;
 		for(iii=0;iii<nume;iii++){
 			printf("%d,%d\n",cor[iii][0],cor[iii][1]);
 		}
+		*/
 	}
 	printf("say you\n");
 }
 
 
 
-void maxheapify(int A[],int i,int size,struct node s[]){
-	int l=2*i;
-	int r=2*i+1;
-	int lowest;
-	if(l<=size&& s[A[l]].key<s[A[i]].key){
-		lowest=l;
-	}else{
-		lowest=i;
-	}
-
-	if(r<size && s[A[r]].key<s[A[lowest]].key){
-		lowest=r;
-	}
-	if(lowest!=i){
-		int temp=A[lowest];
-		A[lowest]=A[i];
-		A[i]=temp;
-		maxheapify(A,lowest,size,s);
-	}
-}
-
-void buildheap(int A[],int i,int size,struct node s[]){
-	int ss=size/2;
-	int j=1;
-	for(j=ss;j>=1;j--){
-		maxheapify(A,j,size,s);
-	}
-	//return A;
-}
-
-int getmax(int A[],int i,int size,struct node s[]){
-	int min;
-	if(s<=0){
-		return -1;
-	}else{
-		min=A[1];
-		A[1]=A[size];
-		maxheapify(A,1,size-1,s);
-		return min;
-	}
-}
-
-void heapdecrease(int A[],int size,struct node s[],int new){
-	A[size+1]=s[new].index;
-	int j=size+1;
-	while(j>1 and s[A[j/2]].key>s[A[j]].key){
-		int temp=A[j/2];
-		A[j/2]=A[j];
-		A[j]=temp;
-		j=j/2;
-	}
-}
-
-void heapdchange(int A[],int i,int size,struct node s[]){
-	int j=i;
-	while(j>1 && s[A[j/2]].key>s[A[j]].key){
-		int temp=A[j/2];
-		A[j/2]=A[j];
-		A[j]=temp;
-		j=j/2;
-	}
-}
 
