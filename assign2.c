@@ -8,7 +8,6 @@ struct node{
 	int key; //a big number
 	int add;
 	int inheap;
-	//struct node *edge = NULL;
 	struct node *next;
     
 };
@@ -17,7 +16,6 @@ int getint(char *s){
 	int i=0;
 	int p=1;
 	int len2=strlen(s);
-	//printf("str: %s, len:%d\n",s,len2);
 	int num=0;
 	for(i=0;i<len2;i++){
 		p=1;
@@ -27,50 +25,8 @@ int getint(char *s){
 		}
 		num=num+p*(s[i]-'0');
 	}
-	//printf("hehe %d\n",num);
 	return num;
 }
-void find(int start,int end,int cor[1000][2],int nume,struct node s[]){
-	int i=0;
-	
-	/*
-	for(i=0;i<all-1;i++){
-		s[i].next=&s[i+1];
-		s[i].index=i;
-	}
-	*/
-	//s[all-1].next=NULL;
-	//s[all-1].index=all-1;
-	//printf("find %d,%d,    %d\n",start,end,nume);
-	printf("nume%d",nume);
-	for(i=0;i<nume;i++){
-
-		//printf("ffff %d,%d\n",cor[i][0],cor[i][1]);
-		struct node e1;
-		e1.index=cor[i][1];
-
-		//printf("ffff %d\n",cor[i][1]);
-		//printf("next%d\n",e1.index);
-		e1.next=s[cor[i][0]].next;
-		s[cor[i][0]].next=&e1;
-		s[cor[i][0]].index=cor[i][0];
-		//printf("next2%d\n",e1.index);
-		struct node e2;
-		e2.index=cor[i][0];
-		e2.next=s[cor[i][1]].next;
-		s[cor[i][1]].next=&e2;
-		s[cor[i][1]].index=cor[i][1];
-		printf("edges1: %d--> %d\n",s[cor[i][0]].index,s[cor[i][0]].next->index);
-		printf("%dedges2: %d--> %d\n",i,s[cor[i][1]].index,s[cor[i][1]].next->index);
-		if(i==nume-1) {
-			printf("2444444");
-			return ;}
-	
-	}
-   printf("22222223333");
-
-}
-
 
 void maxheapify(int A[],int i,int size,struct node s[]){
 	int l=2*i;
@@ -99,7 +55,6 @@ void buildheap(int A[],int i,int size,struct node s[]){
 	for(j=ss;j>=1;j--){
 		maxheapify(A,j,size,s);
 	}
-	//return A;
 }
 
 int getmax(int A[],int i,int size,struct node s[]){
@@ -166,42 +121,39 @@ void main(){
 			int pointer=0;
 			int xp=0; //for 
 			memset(x,0,100*sizeof(char));
+			int fault=0;
 			for(i=4;i<strlen(name)-1;i++){
+				if(fault==1) break;
 				if(name[i]==',' && name[i-1]!='>'){
 					pointer=1;
-					//printf("kkk:  %s",x);
 					cor[nume][0]=getint(x);
-					//printf("c0:%d\n",cor[nume][0]);
 					if(cor[nume][0]<0 || cor[nume][0]>=all){
 						printf("Error: wrong point\n"); 
+						fault=1;
 						continue;
 					}
 					memset(x,0,100*sizeof(char));
-					//printf("kkk222:  %s",x);
 					xp=0;
 
 				}else if(name[i]=='>' && pointer==1){
 					pointer=0;
-					//printf("%c name[i]     getint(x):%d",name[i],getint(x));
-					//printf("kkk2:  %s",x);
 					cor[nume][1]=getint(x);
-					//printf("c1:%d\n",cor[nume][1]);
 					if(cor[nume][1]<0 || cor[nume][1]>=all){
 						printf("Error: wrong point\n"); 
+						fault=1;
 						continue;
 					}
 					nume++;
 					memset(x,0,100*sizeof(char));
-					//printf("kkk2222:  %s",x);
 					xp=0;
 				}else if(name[i]>='0' && name[i]<='9'){
-					//printf("=====%d:  %c\n",xp,name[i]);
 					x[xp++]=name[i];
 				}	
 			     else{	
 			     	xp=0;
 				}
 			}
+			if(fault==1) continue;
 		}else if(name[0]=='s'){
 			int i=0;
 			int p1=0;
@@ -216,11 +168,7 @@ void main(){
 					memset(s1,0,100*sizeof(char));
 				}
 			}
-			//printf(":%s\n",s1);
-			//printf("%d\n",start);
 			end=getint(s1);
-			printf("start:%d,end: %d\n",start,end);
-			//printf("start2: %d, end2: %d\n",start,end);
 			struct node *head=NULL;
 			struct node s[all];
 			int iiii=0;
@@ -231,68 +179,31 @@ void main(){
 				s[iiii].add=0;
 				s[iiii].key=99999;
 				s[iiii].inheap=0;
-				//int index;
-				//int parent;
-				//int key; //a big number
-				//int add;
-				//int inheap;
 			}
-			for (iiii=0;iiii<nume;iiii++){
-				printf("%d\n",s[cor[iiii][0]].index);
-			}
-			printf("alll:%d\n",all);
-			//find(start,end,cor,nume,s);
-			printf("nume:%d\n",nume);
 			struct node e1[nume];
 			struct node e2[nume];
 			for(i=0;i<nume;i++){
-				printf("i: %d",i);
-				//printf("ffff %d,%d\n",cor[i][0],cor[i][1]);
-				//struct node e1;
-				//struct node e2;
-				//e1=memset(e1,0,sizeof(node);
 				e1[i].index=cor[i][1];
-				//e2=memset(e2,0,sizeof(node);
-				//printf("ffff %d\n",cor[i][1]);
-				//printf("next%d\n",e1.index);
 				e1[i].next=s[cor[i][0]].next;
 				s[cor[i][0]].next=&e1[i];
 				s[cor[i][0]].index=cor[i][0];
-				//printf("next2%d\n",e1.index);
 				e2[i].index=cor[i][0];
 				e2[i].next=s[cor[i][1]].next;
 				s[cor[i][1]].next=&e2[i];
 				s[cor[i][1]].index=cor[i][1];
-				printf("%dedges1: %d--> %d\n",i,s[cor[i][0]].index,s[cor[i][0]].next->index);
-				printf("%dedges2: %d--> %d\n",i,s[cor[i][1]].index,s[cor[i][1]].next->index);
-				if(i==nume-1){
-					int ik=0;
-					for(ik=0;ik<all;ik++){
-						if(s[ik].next!=NULL){
-							printf("%d",s[ik].next->index);
-						}
-					}
-				}
 			}
-
-
-
-			//
-			printf("222222222222");
 			int heapsize=all-1;
 			int A[heapsize+1];
 			int jj=0;
 			int ii=1;
-			printf("222222222222");
 			struct node *st=&s[start];
-			printf("start: %d",st->index);
 			int par=start;
 			s[start].add=-1;
 			while(st->next!=NULL){
 				s[st->next->index].key=1;
 				s[st->next->index].parent=par;
 				s[st->next->index].inheap=-1;
-				A[i++]=st->next->index;
+				A[ii++]=st->next->index;
 				st=st->next;
 			}
 			buildheap(A,1,ii-1,s);
@@ -311,7 +222,6 @@ void main(){
 					if(s[st2->next->index].inheap!=-1 && s[st2->next->index].add!=-1){//not in heap
 						s[st2->next->index].key=s[v].key+1;
 						s[st2->next->index].parent=par2;
-						//A[ii++]=st2->next->index; //add to the heap
 						s[st2->next->index].inheap=-1;
 						heapdecrease(A,ii-1,s,st2->next->index);
 						ii++;
@@ -321,7 +231,7 @@ void main(){
 						s[st2->next->index].parent=par2;
 						buildheap(A,1,ii,s);	
 					}
-					st=st->next;
+					st2=st2->next;
 				}
 			}
 			if(flag!=-1){
@@ -331,27 +241,24 @@ void main(){
 				int pi=0;
 				path[pi++]=end;
 				struct node *st3=&s[end];
-				while(st3->parent!=start){
+				int counti=0;
+				// for(counti=0;counti<all;counti++){
+				// 	printf("   %d-->%d\n",s[counti].index,s[counti].parent);
+				// }
+				while(s[st3->parent].index!=start){
 					path[pi++]=s[st3->parent].index;
-					st3=st3->parent;
+					st3=&s[st3->parent];
 				}
 				path[pi++]=start;
 				int count=0;
 				for(count=pi-1;count>0;count--){
 					printf("%d-",path[count]);
 				}
-				printf("%d\n",start);
+				printf("%d\n",path[0]);
 			}
 
 		}
-		/*
-		int iii=0;
-		for(iii=0;iii<nume;iii++){
-			printf("%d,%d\n",cor[iii][0],cor[iii][1]);
-		}
-		*/
 	}
-	printf("say you\n");
 }
 
 
